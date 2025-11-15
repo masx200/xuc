@@ -148,6 +148,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "chart.js/auto": "virtual:https://esm.sh/chart.js/auto/auto.js",
+      
+      "https://cdn.jsdelivr.net/gh/masx200/Xget@main/src/config/platforms.js":"virtual:https://cdn.jsdelivr.net/gh/masx200/Xget@main/src/config/platforms.js"
     },
   },
 });

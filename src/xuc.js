@@ -503,8 +503,9 @@ function performUrlConversion(url, detectedPlatform) {
     // Handle special cases where the path might need adjustment
     path = adjustPathForPlatform(path, detectedPlatform.key, urlObj);
 
-    // Convert platform key: replace "-" with "/" in the platform prefix
-    const platformPrefix = detectedPlatform.key.replace(/-/g, "/");
+    // Use platform key as-is without any character replacement
+    // This preserves both dots and hyphens in the platform prefix
+    const platformPrefix = detectedPlatform.key;
 
     // Get the configured Xget domain
     const xgetDomain = getXgetDomain();
