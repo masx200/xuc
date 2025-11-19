@@ -14,13 +14,15 @@
 
 "use strict";
 
+import { createSampleUrl } from "./createSampleUrl.js";
+
 if (!localStorage.getItem("dontShowSponsorModal")) {
   localStorage.setItem("dontShowSponsorModal", "true");
 }
 if (!localStorage.getItem("xgetDomain")) {
   localStorage.setItem(
     "xgetDomain",
-    "https://xget.a1u06h9fe9y5bozbmgz3.qzz.io",
+    "https://xget.a1u06h9fe9y5bozbmgz3.qzz.io"
   );
 }
 // ============================================================================
@@ -81,6 +83,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadPlatforms();
   loadSavedDomain();
   setupEventListeners();
+  setupDomainsSection();
 
   // Check if the user has chosen not to show the modal again
   const dontShowAgain = localStorage.getItem("dontShowSponsorModal");
@@ -205,7 +208,7 @@ async function loadPlatforms() {
     // const fileContent = await response.text();
 
     // Parse the platform data from the JavaScript file
-    const module=await import('https://cdn.jsdelivr.net/gh/masx200/Xget@main/src/config/platforms.js')
+    const module = await import("./platforms.js");
     platformsData = parsePlatformsData(module);
 
     if (Object.keys(platformsData).length === 0) {
@@ -230,7 +233,7 @@ function parsePlatformsData(module) {
   if (!module || !module.PLATFORMS) {
     throw new Error("无法在模块中找到 PLATFORMS 对象");
   }
-  return JSON.parse(JSON.stringify( module.PLATFORMS));
+  return JSON.parse(JSON.stringify(module.PLATFORMS));
   // try {
   //   // First, try to find the PLATFORMS export
   //   const platformsMatch = fileContent.match(
@@ -421,7 +424,7 @@ function detectPlatform(url) {
           key: "homebrew",
           name: getPlatformDisplayName(
             "homebrew",
-            "https://github.com/Homebrew",
+            "https://github.com/Homebrew"
           ),
           baseUrl: "https://github.com/Homebrew",
         };
@@ -803,3 +806,141 @@ window.addEventListener("unhandledrejection", (event) => {
     showError("发生意外错误。请重试。");
   }
 });
+
+// ============================================================================
+// Domains Section
+// ============================================================================
+
+/** @type {HTMLElement} Domains section container */
+const domainsSection = document.querySelector(".domains-section");
+
+/** @type {HTMLElement} Domains toggle header */
+const domainsToggle = document.getElementById("domains-toggle");
+
+/** @type {HTMLButtonElement} Domains toggle button */
+const domainsToggleBtn = document.getElementById("domains-toggle-btn");
+
+/** @type {HTMLElement} Domains content container */
+const domainsContent = document.getElementById("domains-content");
+
+/** @type {HTMLElement} Domains grid container */
+const domainsGrid = document.getElementById("domains-grid");
+
+/** @type {HTMLElement} Domains count display */
+const domainsCount = document.getElementById("domains-count");
+
+/**
+ * Set up the domains section with collapsible functionality
+ */
+async function setupDomainsSection() {
+  if (
+    !domainsSection ||
+    !domainsToggle ||
+    !domainsToggleBtn ||
+    !domainsContent ||
+    !domainsGrid
+  ) {
+    console.warn("Domains section elements not found");
+    return;
+  }
+
+  // Load domains data
+  await loadDomainsData();
+
+  // Set up toggle functionality
+  domainsToggle.addEventListener("click", toggleDomainsSection);
+  domainsToggleBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleDomainsSection();
+  });
+
+  // Add click handlers for domain items
+  setupDomainClickHandlers();
+}
+
+/**
+ * Load domains data and populate the domains grid
+ */
+async function loadDomainsData() {
+  try {
+    const { generateDomainsHTML } = await import("./generateDomainsHTML.js");
+    const domainsHTML = generateDomainsHTML();
+
+    domainsGrid.innerHTML = domainsHTML;
+
+    // Update domain count
+    updateDomainsCount();
+  } catch (error) {
+    console.error("加载域名数据失败:", error);
+    domainsGrid.innerHTML = '<p class="error-message">加载域名数据失败</p>';
+  }
+}
+
+/**
+ * Toggle the domains section expanded/collapsed state
+ */
+function toggleDomainsSection() {
+  const isExpanded = domainsSection.classList.contains("expanded");
+
+  if (isExpanded) {
+    // Collapse
+    domainsSection.classList.remove("expanded");
+    domainsToggleBtn.querySelector(".toggle-text").textContent = "展开";
+    domainsContent.style.maxHeight = "0";
+  } else {
+    // Expand
+    domainsSection.classList.add("expanded");
+    domainsToggleBtn.querySelector(".toggle-text").textContent = "收起";
+    domainsContent.style.maxHeight = "80vh";
+  }
+}
+
+/**
+ * Update the domains count display
+ */
+function updateDomainsCount() {
+  const domainItems = domainsGrid.querySelectorAll(".domain-list li");
+  const count = domainItems.length;
+
+  if (domainsCount) {
+    domainsCount.textContent = `${count}+`;
+  }
+}
+
+/**
+ * Set up click handlers for domain items
+ */
+function setupDomainClickHandlers() {
+  // Use event delegation for better performance
+  domainsGrid.addEventListener("click", (e) => {
+    const domainItem = e.target.closest(".domain-list li");
+
+    if (domainItem) {
+      const domainUrlElement = domainItem.querySelector(".domain-url");
+      if (domainUrlElement) {
+        const domainUrl = domainUrlElement.textContent.trim();
+
+        // Create a sample URL for this domain
+        const sampleUrl = createSampleUrl(domainUrl);
+
+        if (sampleUrl) {
+          // Populate the URL input with the sample URL
+          originalUrlInput.value = sampleUrl;
+
+          // Trigger URL processing
+          handleUrlInput();
+
+          // Scroll to the converter section
+          converterSection.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+
+          // Highlight the input field
+          originalUrlInput.focus();
+          originalUrlInput.select();
+        }
+      }
+    }
+  });
+}

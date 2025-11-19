@@ -579,6 +579,308 @@ body {
 }
 
 /* ============================================================================
+   Domains Section
+   ============================================================================ */
+.domains-section {
+  margin: var(--spacing-xl) 0;
+  background: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-light);
+  overflow: hidden;
+}
+
+.domains-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-tertiary) 100%);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-fast);
+}
+
+.domains-header:hover {
+  background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-quaternary) 100%);
+}
+
+.domains-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.domains-icon {
+  font-size: var(--font-size-xl);
+}
+
+.domains-count {
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  min-width: 2rem;
+  text-align: center;
+}
+
+.domains-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-primary);
+  color: var(--color-bg-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.domains-toggle-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.toggle-icon {
+  transition: transform var(--transition-fast);
+  display: inline-block;
+}
+
+.domains-section.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.domains-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow) ease-out;
+}
+
+.domains-section.expanded .domains-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.domains-description {
+  padding: var(--spacing-lg) var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.domains-description p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: var(--line-height-relaxed);
+}
+
+.domains-grid {
+  padding: var(--spacing-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.domain-category {
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-light);
+  overflow: hidden;
+}
+
+.category-title {
+  margin: 0;
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: var(--color-bg-primary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.domain-list {
+  list-style: none;
+  margin: 0;
+  padding: var(--spacing-sm);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.domain-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.domain-list li:hover {
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-medium);
+}
+
+.domain-list li:last-child {
+  margin-bottom: 0;
+}
+
+.domain-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  flex: 1;
+  margin-right: var(--spacing-sm);
+}
+
+.domain-url {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  background: var(--color-bg-quaternary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-light);
+  flex-shrink: 0;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Scrollbar Styles for Domain Lists */
+.domain-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.domain-list::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-sm);
+}
+
+.domain-list::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium);
+  border-radius: var(--radius-sm);
+}
+
+.domain-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-lighter);
+}
+
+.domains-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.domains-content::-webkit-scrollbar-track {
+  background: var(--color-bg-tertiary);
+}
+
+.domains-content::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium);
+  border-radius: var(--radius-sm);
+}
+
+.domains-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-lighter);
+}
+
+/* ============================================================================
+   Domains Section Responsive Design
+   ============================================================================ */
+@media (max-width: 768px) {
+  .domains-header {
+    padding: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-md);
+    text-align: center;
+  }
+
+  .domains-title {
+    font-size: var(--font-size-base);
+    flex-direction: column;
+  }
+
+  .domains-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .domain-list {
+    max-height: 250px;
+  }
+
+  .domain-name {
+    font-size: var(--font-size-xs);
+  }
+
+  .domain-url {
+    font-size: 0.7rem;
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .domains-section {
+    margin: var(--spacing-lg) 0;
+  }
+
+  .domains-header {
+    padding: var(--spacing-sm);
+  }
+
+  .domains-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .domains-grid {
+    padding: var(--spacing-sm);
+  }
+
+  .domain-category {
+    border-radius: var(--radius-sm);
+  }
+
+  .category-title {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .domain-list {
+    padding: var(--spacing-xs);
+    max-height: 200px;
+  }
+
+  .domain-list li {
+    padding: var(--spacing-xs);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .domain-name {
+    margin-right: 0;
+    font-size: var(--font-size-xs);
+  }
+
+  .domain-url {
+    font-size: 0.6rem;
+    max-width: 100%;
+    text-align: center;
+  }
+}
+
+/* ============================================================================
    Animations
    ============================================================================ */
 @keyframes slideIn {
