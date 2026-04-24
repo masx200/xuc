@@ -82,9 +82,9 @@ export function createSampleUrl(domain) {
     "raw.githubusercontent.com":
       "https://raw.githubusercontent.com/github/github/main/README.md",
     "cloudflare-dns.com": "https://cloudflare-dns.com/dns-query",
-    "dns.google": "https://dns.google/resolve?name=example.com",
-    "dns.quad9.net": "https://dns.quad9.net:5053/dns-query",
-    "dns.nextdns.io": "https://dns.nextdns.io/resolve",
+    "dns.google": "https://dns.google/dns-query?name=example.com",
+    "dns.quad9.net": "https://dns.quad9.net:443/dns-query",
+    "dns.nextdns.io": "https://dns.nextdns.io/dns-query",
   };
 
   // Return sample URL if found for this domain
