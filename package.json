@@ -22,7 +22,7 @@
     "@tailwindcss/postcss": "^4.1.16",
     "@types/node": "^24.9.2",
     "autoprefixer": "^10.4.21",
-    "axios": "^1.12.2",
+    "axios": "^1.15.1",
     "chart.js": "^4.5.1",
     "prettier": "^3.6.2",
     "prismjs": "^1.30.0",
@@ -41,7 +41,8 @@
   "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c",
   "pnpm": {
     "overrides": {
-      "fast-uri": ">=3.1.2"
+      "fast-uri": ">=3.1.2",
+      "axios": "^1.15.1"
     }
   }
 }
